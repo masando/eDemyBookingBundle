@@ -1,0 +1,7 @@
+services:
+    edemy.booking:
+        class: "eDemy\\BookingBundle\\Controller\\BookingController"
+        calls:
+            - [setEventDispatcher, ["@event_dispatcher"]]
+        tags:
+            - { name: kernel.event_subscriber }

@@ -1,0 +1,22 @@
+{
+  "name" : "edemy/bookingbundle",
+  "description" : "Boking Bundle for eDemy Framework",
+  "type" : "symfony-bundle",
+  "authors" : [{
+    "name" : "Manuel Sanchís",
+    "email" : "msanchis@edemy.es"
+  }],
+  "keywords" : [
+    "edemy booking bundle"
+  ],
+  "license" : [
+    "GNU v2"
+  ],
+  "require" : {
+    "edemy/mainbundle": "*"
+  },
+  "autoload" : {
+    "psr-0" : { "eDemy\\BookingBundle" : "" }
+  },
+  "target-dir": "eDemy/BookingBundle"
+}
