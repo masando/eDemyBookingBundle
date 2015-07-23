@@ -1,6 +1,6 @@
 {
   "name" : "edemy/bookingbundle",
-  "description" : "Boking Bundle for eDemy Framework",
+  "description" : "Booking Bundle for eDemy Framework",
   "type" : "symfony-bundle",
   "authors" : [{
     "name" : "Manuel Sanchís",
