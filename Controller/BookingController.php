@@ -4,6 +4,8 @@ namespace eDemy\BookingBundle\Controller;
 
 use eDemy\MainBundle\Controller\BaseController;
 use eDemy\MainBundle\Event\ContentEvent;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use eDemy\MainBundle\Entity\Param;
 
 use eDemy\BookingBundle\Entity\Booking;
 use eDemy\BookingBundle\Form\BookingType;
@@ -13,32 +15,24 @@ class BookingController extends BaseController
     public static function getSubscribedEvents()
     {
         return self::getSubscriptions('booking', ['booking'], array(
-            'edemy_booking_frontpage_lastmodified' => array('onFrontpageLastModified', 0),
-            //'edemy_agenda_actividad_details' => array('onActividadDetails', 0),
+            'edemy_mainmenu'                        => array('onBookingMainMenu', 0),
         ));
     }
 
-    public function onFrontpageLastModified(ContentEvent $event)
-    {
-        $booking = $this->get('doctrine.orm.entity_manager')->getRepository('eDemyBookingBundle:Booking')->findLastModified(null);
-        //die(var_dump($link->getUpdated()));        
-        if($booking->getUpdated()) {
-            $event->setLastModified($booking->getUpdated());
+    public function onBookingMainMenu(GenericEvent $menuEvent) {
+        $items = array();
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            $item = new Param($this->get('doctrine.orm.entity_manager'));
+            $item->setName('Admin_Reservas');
+            if($namespace = $this->getNamespace()) {
+                $namespace .= ".";
+            }
+            $item->setValue($namespace . 'edemy_booking_booking_index');
+            $items[] = $item;
         }
 
+        $menuEvent['items'] = array_merge($menuEvent['items'], $items);
+
         return true;
-    }
-
-    public function onFrontpage(ContentEvent $event)
-    {
-        $entities = $this->get('doctrine.orm.entity_manager')->getRepository('eDemyBookingBundle:Booking')->findAll();
-
-        //$likeurl = $this->getParam('likeurl');
-
-        $this->addEventModule($event, 'index.html.twig', array(
-            'mode' => $this->getParam('edemy_booking_frontpage_mode'),
-            'entities' => $entities,
-            //'likeurl' => $likeurl,
-        ));
     }
 }
